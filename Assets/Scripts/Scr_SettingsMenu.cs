@@ -11,18 +11,23 @@ public class Scr_SettingsMenu : MonoBehaviour
 
     bool showButtons = false;
 
-   public void show()
+    private void Start()
+    {
+        StaticData.isMobile = true;
+    }
+
+    public void show()
     {
         showButtons = !showButtons;
 
         if (showButtons )
         {
-            ResetGameBtn.SetActive( true );
+            //ResetGameBtn.SetActive( true );
             MobileBtn.SetActive( true );
         }
         else if ( !showButtons )
         {
-            ResetGameBtn.SetActive ( false );
+            //ResetGameBtn.SetActive ( false );
             MobileBtn.SetActive(false );
         }
     }

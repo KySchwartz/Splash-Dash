@@ -53,7 +53,10 @@ public class Pause : MonoBehaviour
     public void resume()
     {
         pauseOverlay.SetActive(false);
-        Time.timeScale = 1;
-        AudSrc.UnPause();
+        if (StaticTimer.totalGameTime > 0)
+        {   
+            Time.timeScale = 1;
+            AudSrc.UnPause();
+        }
     }
 }

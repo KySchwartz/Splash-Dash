@@ -42,7 +42,7 @@ public class Scr_Player : MonoBehaviour
         StartCoroutine(PlayStartSoundAfterDelay(0.5f));
 
         anim = player.GetComponent<Animator>();
-        anim.Play("Swimming");
+        //anim.Play("Swimming");
 
         InvokeRepeating("MovePlayer", 0f, 0.0083f);
     }

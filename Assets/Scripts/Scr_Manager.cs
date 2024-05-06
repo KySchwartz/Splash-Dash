@@ -18,11 +18,18 @@ public class Scr_Manager : MonoBehaviour
     public float obstacleSpawnYMax;
     public float obstacleSpawnYMin;
 
-    //public Vector2 obstacleSpawnPos;
+
     private bool spawnHealth = false;
     public float spawnSpeed = 1f;
 
-    //GameObject spawnedObstacle;
+
+    // Variables for dynamic linear speed control
+    public float spawnChangeRate = -0.002f;
+    public float initialSpawnRate = 1f;
+    // First maxSpawnSpeed was set to 0.75
+    // Second maxSpawnSpeed was set to 0.50
+    public float maxSpawnSpeed = 0.50f;
+
 
     private void Start()
     {
@@ -32,11 +39,27 @@ public class Scr_Manager : MonoBehaviour
         // At the start, tell the program to spawn a new obstacle every 1 seconds
         //InvokeRepeating("pickArray", 0f, spawnSpeed);
         StartCoroutine("RepeatSpawn");
+
+        // Linear speed control set the spawn rate to the initial rate
+        spawnSpeed = initialSpawnRate;
+        spawnChangeRate = -0.002f;
+        maxSpawnSpeed = 0.50f;
     }
 
     private void Update()
     {
-        CheckTime();
+        // Speed control using linear function
+        //spawnSpeed = -0.002f * GameTime.totalGameTime + 1.2f;
+        if (spawnSpeed > maxSpawnSpeed)
+        {
+            spawnSpeed = spawnChangeRate * GameTime.totalGameTime + 1.2f;
+            //Debug.Log("Changing speed");
+        }
+        else
+        {
+            spawnSpeed = maxSpawnSpeed;
+        }
+        //Debug.Log(spawnSpeed);
     }
 
     void pickArray()
@@ -80,7 +103,8 @@ public class Scr_Manager : MonoBehaviour
         GameObject spawnedObstacle = Instantiate(array[UnityEngine.Random.Range(0, array.Length)], obstacleSpawnPos, Quaternion.identity);
 
         // Destroy the obstacle after sufficient time has passed to preserve memory
-        Destroy(spawnedObstacle, 8f);
+        // This causes obstacles to disapeer prematurely on slower devices.  It was replaced with a collision based alternative in a separate script
+        //Destroy(spawnedObstacle, 8f);
     }
 
 
@@ -93,46 +117,7 @@ public class Scr_Manager : MonoBehaviour
         spawnHealth = true;
     }
 
-
-    private void CheckTime()
-    {
-        if (GameTime.totalGameTime < 15)
-        {
-            // Add condition
-        }
-        else if (GameTime.totalGameTime < 30)
-        {
-            spawnSpeed = 0.98f;
-        }
-        else if (GameTime.totalGameTime < 45)
-        {
-            spawnSpeed = 0.96f;
-        }
-        else if (GameTime.totalGameTime < 60)
-        {
-            spawnSpeed = 0.94f;
-        }
-        else if (GameTime.totalGameTime < 75)
-        {
-            spawnSpeed = 0.92f;
-        }
-        else if (GameTime.totalGameTime < 90)
-        {
-            spawnSpeed = 0.90f;
-        }
-        else if (GameTime.totalGameTime < 105)
-        {
-            spawnSpeed = 0.88f;
-        }
-        else if (GameTime.totalGameTime < 145)
-        {
-            spawnSpeed = 0.86f;
-        }
-        else if (GameTime.totalGameTime > 200)
-        {
-            spawnSpeed = 0.84f;
-        }
-    }
+    
 
     private IEnumerator RepeatSpawn()
     {
@@ -145,46 +130,3 @@ public class Scr_Manager : MonoBehaviour
 }
 
 
-
-
-
-
-/*
-
-void SpawnObstacle()
-{
-    // Create the spawn position for the obstacles by using a given X-position and choose a random Y-value given a minimum and a maximum
-    obstacleSpawnPos = new Vector2(obstacleSpawnX, UnityEngine.Random.Range(obstacleSpawnYMin, obstacleSpawnYMax));
-
-    // Create the obstacle at the new position, and name it, so we can reference it
-    spawnedObstacle = Instantiate(obstacles[UnityEngine.Random.Range(0, obstacles.Length)], obstacleSpawnPos, Quaternion.identity);
-
-    // Destroy the obstacle after sufficient time has passed to preserve memory
-    Destroy(spawnedObstacle, 8f);
-}
-
-void SpawnCollectable()
-{
-    // Create the spawn position for the obstacles by using a given X-position and choose a random Y-value given a minimum and a maximum
-    collectableSpawnPos = new Vector2(obstacleSpawnX + 2, UnityEngine.Random.Range(obstacleSpawnYMin, obstacleSpawnYMax));
-
-    // Create the obstacle at the new position, and name it, so we can reference it
-    spawnedCollectable = Instantiate(collectables[UnityEngine.Random.Range(0, collectables.Length)], collectableSpawnPos, Quaternion.identity);
-
-    // Destroy the obstacle after sufficient time has passed to preserve memory
-    Destroy(spawnedCollectable, 10f);
-}
-
-void SpawnHealth()
-{
-    // Create the spawn position for the obstacles by using a given X-position and choose a random Y-value given a minimum and a maximum
-    healthSpawnPos = new Vector2(obstacleSpawnX + 1, UnityEngine.Random.Range(obstacleSpawnYMin, obstacleSpawnYMax));
-
-    // Create the obstacle at the new position, and name it, so we can reference it
-    spawnedHealth = Instantiate(health[UnityEngine.Random.Range(0, health.Length)], healthSpawnPos, Quaternion.identity);
-
-    // Destroy the obstacle after sufficient time has passed to preserve memory
-    Destroy(spawnedHealth, 10f);
-}
-
-*/

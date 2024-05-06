@@ -12,6 +12,8 @@ public class Scr_Distance : MonoBehaviour
     public TMP_Text distanceText;
     public float distance;
 
+    public TMP_Text farthestDistance;
+
     private void Start()
     {
         // Record the initial game start time
@@ -34,7 +36,12 @@ public class Scr_Distance : MonoBehaviour
             // For example, display it on the UI or trigger events after a certain duration
 
             printDistance();
+
+            // Add the game time to the static variable so the obstacles can reference it
+            StaticTimer.totalGameTime = totalGameTime;
         }
+
+        updateFarthestDistance();
     }
 
     public void printDistance()
@@ -43,9 +50,20 @@ public class Scr_Distance : MonoBehaviour
         distanceText.text = "Distance: " + distance.ToString("0.0000");
     }
 
-    // Example usage: Display the total game time in seconds
-/*    private void OnGUI()
+    public void updateFarthestDistance()
     {
-        GUI.Label(new Rect(10, 10, 200, 20), $"Total Game Time: {totalGameTime:F2} seconds");
-    }   */
+        if (distance > PlayerPrefs.GetFloat("FarthestDistance"))
+        {
+            PlayerPrefs.SetFloat("FarthestDistance", distance);
+            //farthestDistance.text = distance.ToString();
+            farthestDistance.text = "Farthest Distance: " + PlayerPrefs.GetFloat("FarthestDistance", 0).ToString("0.00");
+        }
+        farthestDistance.text = "Farthest Distance: " + PlayerPrefs.GetFloat("FarthestDistance", 0).ToString("0.00");
+    }
+
+    // Example usage: Display the total game time in seconds
+    /*    private void OnGUI()
+        {
+            GUI.Label(new Rect(10, 10, 200, 20), $"Total Game Time: {totalGameTime:F2} seconds");
+        }   */
 }

@@ -99,7 +99,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaf20120ce8193645b4b3b9738e78bba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalGameTime: 0
+  GameTime: {fileID: 0}
   speed: 2
+  speedChangeRate: 0.0108
+  maxSpeed: 4
+  initialSpeed: 2
 --- !u!50 &1623022800523465639
 Rigidbody2D:
   serializedVersion: 4

@@ -7,5 +7,6 @@ public class Scr_ResetHighscore : MonoBehaviour
     public void resetHighScore()
     {
         PlayerPrefs.DeleteKey("Highscore");
+        PlayerPrefs.DeleteKey("FarthestDistance");
     }
 }
